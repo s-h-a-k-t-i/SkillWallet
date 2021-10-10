@@ -1,0 +1,303 @@
+<%- include("header") %> 
+
+<script>
+
+var UserAddress="";
+
+var Skill_No = 0;
+var Skill_Name = 0;
+var Skill_DOB = 0;
+var Skill_Hash = 0;
+var Skill_Address = 0;
+
+window.addEventListener('load', async () => {
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            await ethereum.enable();
+			UserAddress=web3.eth.coinbase;
+			ViewSkillRequestDetail();
+        } catch (error) {
+            alert("User denied account access...");
+        }
+    }
+    else if (window.web3) {
+        window.web3 = new Web3(web3.currentProvider);
+		UserAddress=web3.eth.coinbase;
+		ViewSkillRequestDetail();
+    }
+    else {
+        alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    }
+});
+
+function ViewSkillRequestDetail()
+{
+	var ABIString = document.getElementById("hdnContractABI").value; 
+	ABIString = ABIString.replace(/'/g , "\"");
+	ABIJSON = JSON.parse(ABIString);
+	MyContract = web3.eth.contract(ABIJSON).at("<%=ContractAddress%>");
+	
+	requestlistchild = document.getElementById("requestlistchild");
+	
+	MyContract.ViewSkillRequestDetail.call(UserAddress, <%=RequestIndex%>, function(error, result){
+		if(!error)
+		{
+			//console.log(result);
+			
+			Skill_No = result[1].toNumber();
+			Skill_Name = result[2].toNumber();
+			Skill_DOB = result[3].toNumber();
+			Skill_Hash = result[4].toNumber();
+			Skill_Address = result[5].toNumber(); 
+
+			/*
+			console.log("Skill_No - "+Skill_No);
+			console.log("Skill_Name - "+Skill_Name);
+			console.log("Skill_DOB - "+Skill_DOB);
+			console.log("Skill_DOE - "+Skill_DOE);
+			console.log("Skill_Address - "+Skill_Address);
+			*/
+			
+			if(Skill_No == 1)
+			{
+				var listHTML = "<tr><td width='80%'>Driving Licence No.</td><td width='20%' align='center'><input type='checkbox' id='chk_Skill_No' name='chk_Skill_No' value=''/></td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+
+			if(Skill_Name == 1)
+			{
+				var listHTML = "<tr><td width='80%'>Name as per Driving Licence</td><td width='20%' align='center'><input type='checkbox' id='chk_Skill_Name' name='chk_Skill_Name' value=''/></td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+
+			if(Skill_DOB == 1)
+			{
+				var listHTML = "<tr><td width='80%'>Date Of Birth as per Driving Licence</td><td width='20%' align='center'><input type='checkbox' id='chk_Skill_DOB' name='chk_Skill_DOB' value=''/></td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+
+			if(Skill_Hash == 1)
+			{
+				var listHTML = "<tr><td width='80%'>Digital Licence Copy</td><td width='20%' align='center'><input type='checkbox' id='chk_Skill_Hash' name='chk_Skill_Hash' value=''/></td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+
+			if(Skill_Address == 1)
+			{
+				var listHTML = "<tr><td width='80%'>Address as per Driving Licence</td><td width='20%' align='center'><input type='checkbox' id='chk_Skill_Address' name='chk_Skill_Address' value=''/></td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+			
+		}
+		else
+		{
+			swal(error);
+		}
+	})
+}
+
+function UpdateRequestStatus()
+{
+	var ABIString = document.getElementById("hdnContractABI").value; 
+	ABIString = ABIString.replace(/'/g , "\"");
+	ABIJSON = JSON.parse(ABIString);
+	MyContract = web3.eth.contract(ABIJSON).at("<%=ContractAddress%>");
+
+	var AccessReqCount=0;
+	var AccessPerCount=0;
+
+	if(Skill_No == 1)
+	{
+		AccessReqCount=AccessReqCount+1;
+		if(document.getElementById("chk_Skill_No").checked)
+		{
+			Skill_No=2;
+			AccessPerCount=AccessPerCount+1;
+		}
+		else
+		{
+			Skill_No=3;
+		}
+	}
+	
+	if(Skill_Name == 1)
+	{
+		AccessReqCount=AccessReqCount+1;
+		if(document.getElementById("chk_Skill_Name").checked)
+		{
+			Skill_Name=2;
+			AccessPerCount=AccessPerCount+1;
+		}
+		else
+		{
+			Skill_Name=3;
+		}
+	}
+
+	if(Skill_DOB == 1)
+	{
+		AccessReqCount=AccessReqCount+1;
+		if(document.getElementById("chk_Skill_DOB").checked)
+		{
+			Skill_DOB=2;
+			AccessPerCount=AccessPerCount+1;
+		}
+		else
+		{
+			Skill_DOB=3;
+		}
+	}
+
+	if(Skill_Hash == 1)
+	{
+		AccessReqCount=AccessReqCount+1;
+		if(document.getElementById("chk_Skill_Hash").checked)
+		{
+			Skill_Hash=2;
+			AccessPerCount=AccessPerCount+1;
+		}
+		else
+		{
+			Skill_Hash=3;
+		}
+	}
+
+	if(Skill_Address == 1)
+	{
+		AccessReqCount=AccessReqCount+1;
+		if(document.getElementById("chk_Skill_Address").checked)
+		{
+			Skill_Address=2;
+			AccessPerCount=AccessPerCount+1;
+		}
+		else
+		{
+			Skill_Address=3;
+		}
+	}
+	
+	var Skill_OverAll_Status = 0;
+	if(AccessPerCount == 0)
+	{
+		Skill_OverAll_Status = 4;
+	}
+	else if(AccessPerCount == AccessReqCount)
+	{
+		Skill_OverAll_Status = 3;
+	}
+	else if(AccessPerCount < AccessReqCount)
+	{
+		Skill_OverAll_Status = 2;
+	}
+
+/*
+	console.log("=========================================================");
+	console.log("Skill_No - "+Skill_No);
+	console.log("Skill_Name - "+Skill_Name);
+	console.log("Skill_DOB - "+Skill_DOB);
+	console.log("Skill_DOE - "+Skill_DOE);
+	console.log("Skill_Address - "+Skill_Address);
+	console.log("Skill_OverAll_Status - "+Skill_OverAll_Status);
+	
+	return false;
+*/
+	
+	MyContract.UpdateRequestStatus.sendTransaction(UserAddress,<%=RequestIndex%>,Skill_No,Skill_Name,Skill_DOB,Skill_Hash,Skill_Address,Skill_OverAll_Status,function(err, transactionHash) {
+		if(!err)
+		{
+			location.href="/Message?TransHash="+transactionHash;
+		}
+		else
+		{
+			console.log(err)
+		}
+	});
+
+}
+
+</script>
+
+</head>
+<body id="page-top">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+<div class="container">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		</button>
+		<img src="../public/img/1ID-logo.png">
+	</div>
+	
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<a class="page-scroll" href="/">Home</a>
+			</li>
+		</ul>
+	</div>
+	<!-- /.navbar-collapse -->
+	
+</div>
+<!-- /.container -->
+</nav>
+
+<form name="IntelitixForm" method="post" action="pubcert.asp">
+<div class="container container_body">
+	<div class="row">
+		<div class="col-md-6 center-block">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">View Access Request</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-bordered" id="requestlistparent">
+						<tr>
+							<td width="40" align="center"><b>Institution Name</b></td>
+							<td width="40" align="center"><b><%=InstitutionName%></b></td>
+						</tr>
+					</table>
+					
+					<table class="table table-bordered" id="requestlistchild">
+						<tr>
+							<td colspan="2" align="center"><b>Requested Access</b></td>
+						</tr>
+					</table>
+					
+					<div class="aligncenter">
+						<button type="button" class="btn btnsm btn-primary" onClick="UpdateRequestStatus()">Update Access</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="hidden" id="hdnContractABI" name="hdnContractABI" value="[{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'}],'name':'ViewSkillRequestDetail','outputs':[{'name':'RequestedBy','type':'string'},{'name':'Skill_No','type':'uint256'},{'name':'Skill_Name','type':'uint256'},{'name':'Skill_DOB','type':'uint256'},{'name':'Skill_Hash','type':'uint256'},{'name':'Skill_Address','type':'uint256'},{'name':'Skill_OverAll_Status','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'FullName','type':'string'},{'name':'EmailID','type':'string'},{'name':'MobileNo','type':'uint256'}],'name':'AddUser','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'}],'name':'ViewSkillRequestLength','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'Skill_No','type':'string'},{'name':'Skill_Name','type':'string'},{'name':'Skill_DOB','type':'string'},{'name':'Skill_Hash','type':'bytes'},{'name':'Skill_Address','type':'string'}],'name':'AddUserSkill','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'}],'name':'viewUserSkill','outputs':[{'name':'Skill_No_S','type':'uint256'},{'name':'Skill_No_V','type':'string'},{'name':'Skill_Name_S','type':'uint256'},{'name':'Skill_Name_V','type':'string'},{'name':'Skill_DOB_S','type':'uint256'},{'name':'Skill_DOB_V','type':'string'},{'name':'Skill_Hash_S','type':'uint256'},{'name':'Skill_Hash_V','type':'bytes'},{'name':'Skill_Address_S','type':'uint256'},{'name':'Skill_Address_V','type':'string'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'}],'name':'ViewSkillRequestHeader','outputs':[{'name':'RequestedBy','type':'string'},{'name':'Skill_OverAll_Status','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'UserIndex','type':'uint256'}],'name':'viewUser','outputs':[{'name':'FullName','type':'string'},{'name':'EmailID','type':'string'},{'name':'MobileNo','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'},{'name':'Skill_No','type':'uint256'},{'name':'Skill_Name','type':'uint256'},{'name':'Skill_DOB','type':'uint256'},{'name':'Skill_Hash','type':'uint256'},{'name':'Skill_Address','type':'uint256'},{'name':'Skill_OverAll_Status','type':'uint256'}],'name':'UpdateRequestStatus','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestedBy','type':'string'},{'name':'Skill_No','type':'uint256'},{'name':'Skill_Name','type':'uint256'},{'name':'Skill_DOB','type':'uint256'},{'name':'Skill_Hash','type':'uint256'},{'name':'Skill_Address','type':'uint256'},{'name':'Skill_OverAll_Status','type':'uint256'}],'name':'AddSkillRequest','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'inputs':[],'payable':false,'stateMutability':'nonpayable','type':'constructor'}]">
+
+</form>
+
+<footer class="navbar-fixed-bottom">
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<div class="footer-copyright">
+				&copy; 2019 1ID
+			</div>
+		</div>
+	</div>
+</div>
+</footer>
+
+<script src="../public/js/jquery.js"></script>
+<script src="../public/js/bootstrap.min.js"></script>
+<script src="../public/js/sweet-alert.min.js"></script>
+
+</body>
+</html>
