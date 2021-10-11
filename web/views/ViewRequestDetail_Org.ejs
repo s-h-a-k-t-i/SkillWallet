@@ -61,22 +61,6 @@ function viewUserSkill()
 			Skill_Address = result[8].toNumber(); 
 			Skill_Address_Value = result[9]; 
 
-		
-			if(Skill_No > 0)
-			{
-				if(Skill_No == 2)
-				{
-					Skill_No_Status = "<font color='green'><b>Approved</b></font>";
-				}
-				else
-				{
-					Skill_No_Status = "Rejected";
-					Skill_No_Value = "";
-				}
-				
-				var listHTML = "<tr><td width='40%'>Driving Licence No.</td><td width='20%'>"+Skill_No_Status+"</td><td width='40%' align='center'>"+Skill_No_Value+"</td></tr>";
-				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
-			}
 
 			if(Skill_Name > 0)
 			{
@@ -90,7 +74,7 @@ function viewUserSkill()
 					Skill_Name_Value = "";
 				}
 				
-				var listHTML = "<tr><td width='40%'>Name as per Driving Licence</td><td width='20%'>"+Skill_Name_Status+"</td><td width='40%' align='center'>"+Skill_Name_Value+"</td></tr>";
+				var listHTML = "<tr><td width='40%'>Name</td><td width='20%'>"+Skill_Name_Status+"</td><td width='40%' align='center'>"+Skill_Name_Value+"</td></tr>";
 				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
 			}
 
@@ -106,28 +90,7 @@ function viewUserSkill()
 					Skill_DOB_Value = "";
 				}
 				
-				var listHTML = "<tr><td width='40%'>Date Of Birth as per Driving Licence</td><td width='20%'>"+Skill_DOB_Status+"</td><td width='40%' align='center'>"+Skill_DOB_Value+"</td></tr>";
-				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
-			}
-			
-			if(Skill_Hash > 0)
-			{
-				if(Skill_Hash == 2)
-				{
-					Skill_Hash_Status = "<font color='green'><b>Approved</b></font>";
-
-					DrivingLicenceHash = hex2a(Skill_Hash_Value);
-					document.getElementById("hdnDrivingLicenceHash").value=DrivingLicenceHash;
-					
-					showSkillBtn = "<button type='button' class='btn btn-primary btn-xs' onClick='showDrivingLicence()'>View Licence</button>";
-				}
-				else
-				{
-					Skill_Hash_Status = "<font color='red'><b>Rejected</b></font>";
-					Skill_Hash_Value = "";
-				}
-				
-				var listHTML = "<tr><td width='40%'>Digital Licence Copy</td><td width='20%'>"+Skill_Hash_Status+"</td><td width='40%' align='center'>"+showSkillBtn+"</td></tr>";
+				var listHTML = "<tr><td width='40%'>Assigned Date</td><td width='20%'>"+Skill_DOB_Status+"</td><td width='40%' align='center'>"+Skill_DOB_Value+"</td></tr>";
 				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
 			}
 
@@ -143,11 +106,48 @@ function viewUserSkill()
 					Skill_Address_Value = "";
 				}
 				
-				var listHTML = "<tr><td width='40%'>Address as per Driving Licence</td><td width='20%'>"+Skill_Address_Status+"</td><td width='40%' align='center'>"+Skill_Address_Value+"</td></tr>";
+				var listHTML = "<tr><td width='40%'>Certified for</td><td width='20%'>"+Skill_Address_Status+"</td><td width='40%' align='center'>"+Skill_Address_Value+"</td></tr>";
 				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
 			}
+
 			
-			
+			if(Skill_No > 0)
+			{
+				if(Skill_No == 2)
+				{
+					Skill_No_Status = "<font color='green'><b>Approved</b></font>";
+				}
+				else
+				{
+					Skill_No_Status = "Rejected";
+					Skill_No_Value = "";
+				}
+				
+				var listHTML = "<tr><td width='40%'>Duration</td><td width='20%'>"+Skill_No_Status+"</td><td width='40%' align='center'>"+Skill_No_Value+"</td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+
+			if(Skill_Hash > 0)
+			{
+				if(Skill_Hash == 2)
+				{
+					Skill_Hash_Status = "<font color='green'><b>Approved</b></font>";
+
+					DrivingLicenceHash = hex2a(Skill_Hash_Value);
+					document.getElementById("hdnDrivingLicenceHash").value=DrivingLicenceHash;
+					
+					showSkillBtn = "<button type='button' class='btn btn-primary btn-xs' onClick='showDrivingLicence()'>View Certificate</button>";
+				}
+				else
+				{
+					Skill_Hash_Status = "<font color='red'><b>Rejected</b></font>";
+					Skill_Hash_Value = "";
+				}
+				
+				var listHTML = "<tr><td width='40%'>Digital Certificate Copy</td><td width='20%'>"+Skill_Hash_Status+"</td><td width='40%' align='center'>"+showSkillBtn+"</td></tr>";
+				requestlistchild.insertAdjacentHTML('beforeend',listHTML);
+			}
+
 		}
 		else
 		{
@@ -254,7 +254,7 @@ function openInvoiceWindow(invoiceURL)
 </div>
 
 <input type="hidden" id="hdnDrivingLicenceHash" name="hdnDrivingLicenceHash" value="">
-<input type="hidden" id="hdnContractABI" name="hdnContractABI" value="[{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'}],'name':'ViewSkillRequestDetail','outputs':[{'name':'RequestedBy','type':'string'},{'name':'Skill_No','type':'uint256'},{'name':'Skill_Name','type':'uint256'},{'name':'Skill_DOB','type':'uint256'},{'name':'Skill_Hash','type':'uint256'},{'name':'Skill_Address','type':'uint256'},{'name':'Skill_OverAll_Status','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'FullName','type':'string'},{'name':'EmailID','type':'string'},{'name':'MobileNo','type':'uint256'}],'name':'AddUser','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'}],'name':'ViewSkillRequestLength','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'Skill_No','type':'string'},{'name':'Skill_Name','type':'string'},{'name':'Skill_DOB','type':'string'},{'name':'Skill_Hash','type':'bytes'},{'name':'Skill_Address','type':'string'}],'name':'AddUserSkill','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'}],'name':'viewUserSkill','outputs':[{'name':'Skill_No_S','type':'uint256'},{'name':'Skill_No_V','type':'string'},{'name':'Skill_Name_S','type':'uint256'},{'name':'Skill_Name_V','type':'string'},{'name':'Skill_DOB_S','type':'uint256'},{'name':'Skill_DOB_V','type':'string'},{'name':'Skill_Hash_S','type':'uint256'},{'name':'Skill_Hash_V','type':'bytes'},{'name':'Skill_Address_S','type':'uint256'},{'name':'Skill_Address_V','type':'string'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'}],'name':'ViewSkillRequestHeader','outputs':[{'name':'RequestedBy','type':'string'},{'name':'Skill_OverAll_Status','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'UserAddress','type':'address'},{'name':'UserIndex','type':'uint256'}],'name':'viewUser','outputs':[{'name':'FullName','type':'string'},{'name':'EmailID','type':'string'},{'name':'MobileNo','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestIndex','type':'uint256'},{'name':'Skill_No','type':'uint256'},{'name':'Skill_Name','type':'uint256'},{'name':'Skill_DOB','type':'uint256'},{'name':'Skill_Hash','type':'uint256'},{'name':'Skill_Address','type':'uint256'},{'name':'Skill_OverAll_Status','type':'uint256'}],'name':'UpdateRequestStatus','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':false,'inputs':[{'name':'UserAddress','type':'address'},{'name':'RequestedBy','type':'string'},{'name':'Skill_No','type':'uint256'},{'name':'Skill_Name','type':'uint256'},{'name':'Skill_DOB','type':'uint256'},{'name':'Skill_Hash','type':'uint256'},{'name':'Skill_Address','type':'uint256'},{'name':'Skill_OverAll_Status','type':'uint256'}],'name':'AddSkillRequest','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'inputs':[],'payable':false,'stateMutability':'nonpayable','type':'constructor'}]">
+<input type="hidden" id="hdnContractABI" name="hdnContractABI" value="[{'constant':true,'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'string','name':'RequestedBy','type':'string'},{'internalType':'uint256','name':'Skill_Duration','type':'uint256'},{'internalType':'uint256','name':'Skill_Name','type':'uint256'},{'internalType':'uint256','name':'Skill_AssignedDate','type':'uint256'},{'internalType':'uint256','name':'Skill_Hash','type':'uint256'},{'internalType':'uint256','name':'Skill_CertifiedFor','type':'uint256'},{'internalType':'uint256','name':'Skill_OverAll_Status','type':'uint256'}],'name':'AddSkillRequest','outputs':[],'stateMutability':'nonpayable','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'string','name':'FullName','type':'string'},{'internalType':'string','name':'EmailID','type':'string'},{'internalType':'uint256','name':'MobileNo','type':'uint256'}],'name':'AddUser','outputs':[],'stateMutability':'nonpayable','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'string','name':'Skill_Duration','type':'string'},{'internalType':'string','name':'Skill_Name','type':'string'},{'internalType':'string','name':'Skill_AssignedDate','type':'string'},{'internalType':'bytes','name':'Skill_Hash','type':'bytes'},{'internalType':'string','name':'Skill_CertifiedFor','type':'string'}],'name':'AddUserSkill','outputs':[],'stateMutability':'nonpayable','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'uint256','name':'RequestIndex','type':'uint256'},{'internalType':'uint256','name':'Skill_Duration','type':'uint256'},{'internalType':'uint256','name':'Skill_Name','type':'uint256'},{'internalType':'uint256','name':'Skill_AssignedDate','type':'uint256'},{'internalType':'uint256','name':'Skill_Hash','type':'uint256'},{'internalType':'uint256','name':'Skill_CertifiedFor','type':'uint256'},{'internalType':'uint256','name':'Skill_OverAll_Status','type':'uint256'}],'name':'UpdateRequestStatus','outputs':[],'stateMutability':'nonpayable','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'uint256','name':'RequestIndex','type':'uint256'}],'name':'ViewSkillRequestDetail','outputs':[{'internalType':'string','name':'RequestedBy','type':'string'},{'internalType':'uint256','name':'Skill_Duration','type':'uint256'},{'internalType':'uint256','name':'Skill_Name','type':'uint256'},{'internalType':'uint256','name':'Skill_AssignedDate','type':'uint256'},{'internalType':'uint256','name':'Skill_Hash','type':'uint256'},{'internalType':'uint256','name':'Skill_CertifiedFor','type':'uint256'},{'internalType':'uint256','name':'Skill_OverAll_Status','type':'uint256'}],'stateMutability':'view','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'uint256','name':'RequestIndex','type':'uint256'}],'name':'ViewSkillRequestHeader','outputs':[{'internalType':'string','name':'RequestedBy','type':'string'},{'internalType':'uint256','name':'Skill_OverAll_Status','type':'uint256'}],'stateMutability':'view','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'}],'name':'ViewSkillRequestLength','outputs':[{'internalType':'uint256','name':'','type':'uint256'}],'stateMutability':'view','type':'function'},{'inputs':[],'name':'skillWallet','outputs':[],'stateMutability':'nonpayable','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'uint256','name':'UserIndex','type':'uint256'}],'name':'viewUser','outputs':[{'internalType':'string','name':'FullName','type':'string'},{'internalType':'string','name':'EmailID','type':'string'},{'internalType':'uint256','name':'MobileNo','type':'uint256'}],'stateMutability':'view','type':'function'},{'inputs':[{'internalType':'address','name':'UserAddress','type':'address'},{'internalType':'uint256','name':'RequestIndex','type':'uint256'}],'name':'viewUserSkill','outputs':[{'internalType':'uint256','name':'Skill_Duration_S','type':'uint256'},{'internalType':'string','name':'Skill_Duration_V','type':'string'},{'internalType':'uint256','name':'Skill_Name_S','type':'uint256'},{'internalType':'string','name':'Skill_Name_V','type':'string'},{'internalType':'uint256','name':'Skill_AssignedDate_S','type':'uint256'},{'internalType':'string','name':'Skill_AssignedDate_V','type':'string'},{'internalType':'uint256','name':'Skill_Hash_S','type':'uint256'},{'internalType':'bytes','name':'Skill_Hash_V','type':'bytes'},{'internalType':'uint256','name':'Skill_CertifiedFor_S','type':'uint256'},{'internalType':'string','name':'Skill_CertifiedFor_V','type':'string'}],'stateMutability':'view','type':'function'}]">
 
 </form>
 
