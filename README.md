@@ -11,3 +11,5 @@
     <li>run node app.js</li>
     <li>open http://localhost:3000 in your browser</li>
 </ul>
+
+## We are still working on its functionalities.
