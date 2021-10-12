@@ -16,8 +16,10 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-// Deploy Smart Contract and place smart contract address here 
+// Deploy Smart Contract and place smart contract address here
 var ContractAddress = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+
+//var ContractAddress = "0x4A86812e8A893927547C8E9677855c9651B312Cb";
                        
 app.get('/', function (req, res) {
 	res.render("index")
@@ -72,5 +74,5 @@ var server = app.listen(3000, function () {
    var host = server.address().address
    var port = server.address().port
    
-   console.log("Example app listening at http://localhost:%s", port)
+   console.log("App listening at http://localhost:%s", port)
 })
